@@ -1,0 +1,29 @@
+[project]
+name = "packet-tracer-mcp"
+version = "0.1.0"
+description = "MCP server for Cisco Packet Tracer 9"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = ["mcp>=2.3,<3"]
+
+[project.scripts]
+packet-tracer-mcp = "ptmcp.server:main"
+ptmcp = "ptmcp.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ptmcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

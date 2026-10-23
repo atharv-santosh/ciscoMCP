@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>PT-MCP Bridge</title>
+<style>
+body{font:12px -apple-system,"Segoe UI",sans-serif;margin:0;padding:10px 12px;background:#f6f6f4;color:#222}
+.pill{display:inline-block;padding:2px 9px;border-radius:9px;background:#e8e6e1;font-weight:600}
+.on{background:#d5f5dd;color:#11632b}.off{background:#fbe1e1;color:#8a1c1c}
+#log{margin-top:8px;font:11px Menlo,Consolas,monospace;color:#555;white-space:pre-wrap;max-height:120px;overflow:auto}
+</style></head><body>
+<b>PT-MCP Bridge</b> &nbsp;<span id="st" class="pill off">waiting for MCP server</span>
+<div style="margin-top:6px;color:#666">127.0.0.1:<span id="port"></span> &middot; jobs <span id="n">0</span></div>
+<div id="log"></div>
+<script>
+// loads bridge.js from the server, retries until it's up
+var PTMCP_PORT = 39150;  // same as PTMCP_PORT on the server
+document.getElementById("port").textContent = PTMCP_PORT;
+function ptmcpLoad() {
+  if (window.ptmcpLoaded) { return; }
+  var s = document.createElement("script");
+  s.src = "http://127.0.0.1:" + PTMCP_PORT + "/bridge.js?t=" + Date.now();
+  s.onerror = function () { s.remove(); setTimeout(ptmcpLoad, 2000); };
+  document.body.appendChild(s);
+}
+ptmcpLoad();
+</script>
+</body></html>
