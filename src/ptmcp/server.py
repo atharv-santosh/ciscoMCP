@@ -204,8 +204,11 @@ async def pt_status() -> str:
 @mcp.tool(annotations=RO, structured_output=False)
 async def pt_setup_instructions() -> str:
     """How to install the one-time PT-side bridge module (needed if pt_status says NOT CONNECTED)."""
-    ext = Path(__file__).resolve().parents[2] / "pt_extension"
+    from .cli import module_path
+    ext = module_path().parent
     return f"""One-time Packet Tracer setup (30 seconds):
+0. Easiest: run `ptmcp install-extension`, then restart Packet Tracer and answer Yes when it
+   asks about the new script module. Steps 1-2 are the manual equivalent.
 1. Packet Tracer 9 > Extensions > Scripting > Configure PT Script Modules... > Add...
 2. Choose {ext / 'ptmcp.pts'} (Startup is already "On Startup").
 3. Restart Packet Tracer (or select the module and press Start). A small "PT-MCP Bridge" window opens

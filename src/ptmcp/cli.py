@@ -1,23 +1,74 @@
 """ptmcp command line.
 
-ptmcp doctor          check PT, the bridge port and the PT module
-ptmcp module          print the PT-side script and install steps
-ptmcp exec '<js>'     run JS in PT through a running server
-ptmcp serve-bridge    run only the bridge
+ptmcp doctor             check PT, the bridge port and the PT module
+ptmcp install-extension  copy the PT script module into Packet Tracer
+ptmcp module             print the PT-side script and install steps
+ptmcp exec '<js>'        run JS in PT through a running server
+ptmcp serve-bridge       run only the bridge
 """
 
 from __future__ import annotations
 
 import asyncio
+import glob
 import json
+import platform
+import shutil
 import subprocess
 import sys
 import urllib.request
+from importlib import resources
 from pathlib import Path
 
 from .bridge import PORT
 
-MODULE = Path(__file__).resolve().parents[2] / "pt_extension" / "ptmcp.js"
+MODULE_NAME = "ptmcp.pts"
+
+
+def module_path() -> Path:
+    return Path(str(resources.files("ptmcp").joinpath("pt_extension", MODULE_NAME)))
+
+
+def pt_extension_dirs() -> list[Path]:
+    s = platform.system()
+    if s == "Darwin":
+        pats = ["/Applications/Cisco Packet Tracer*/Cisco Packet Tracer*.app/Contents/extensions"]
+    elif s == "Windows":
+        pats = [r"C:\Program Files\Cisco Packet Tracer*\extensions",
+                r"C:\Program Files (x86)\Cisco Packet Tracer*\extensions"]
+    else:
+        pats = ["/opt/pt/extensions", "/usr/local/pt/extensions",
+                str(Path.home() / "pt" / "extensions")]
+    return [Path(p) for pat in pats for p in sorted(glob.glob(pat))]
+
+
+def install_extension(dest: str | None = None) -> int:
+    src = module_path()
+    if not src.is_file():
+        print("could not find the bundled PT module", file=sys.stderr)
+        return 1
+
+    targets = [Path(dest)] if dest else pt_extension_dirs()
+    if not targets:
+        print("no Packet Tracer install found; pass the extensions directory:", file=sys.stderr)
+        print("  ptmcp install-extension '/path/to/Packet Tracer/extensions'", file=sys.stderr)
+        return 1
+
+    for ext in targets:
+        if not ext.is_dir():
+            print("--", f"{ext} is not a directory", file=sys.stderr)
+            return 1
+        out = ext / "ptmcp"
+        try:
+            out.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, out / MODULE_NAME)
+        except PermissionError:
+            print("--", f"cannot write to {out}; rerun with sudo", file=sys.stderr)
+            return 1
+        print("ok", f"installed {out / MODULE_NAME}")
+
+    print("   restart Packet Tracer; when it asks about a new script module, choose Yes")
+    return 0
 
 
 def _ping() -> dict | None:
@@ -33,6 +84,12 @@ def doctor() -> int:
     pt = subprocess.run(["pgrep", "-fl", "PacketTracer"], capture_output=True, text=True).stdout.strip()
     print(("ok" if pt else "--"), "Packet Tracer process", "running" if pt else "not running")
     ok &= bool(pt)
+
+    installed = [e / "ptmcp" / MODULE_NAME for e in pt_extension_dirs()]
+    found = [p for p in installed if p.is_file()]
+    print(("ok" if found else "--"), "PT script module",
+          str(found[0]) if found else "not installed (run `ptmcp install-extension`)")
+
     st = _ping()
     if st is None:
         print("--", f"no ptmcp bridge on 127.0.0.1:{PORT} (starts with the MCP server; or `ptmcp serve-bridge`)")
@@ -41,7 +98,6 @@ def doctor() -> int:
         print(("ok" if st.get("connected") else "--"), "PT module connected",
               st.get("pt") or "(open Extensions > PT-MCP Bridge in Packet Tracer)")
         ok &= bool(st.get("connected"))
-    print("  ", f"PT-side module source: {MODULE}")
     return 0 if ok else 1
 
 
@@ -70,9 +126,12 @@ def main() -> None:
     cmd = args[0] if args else "help"
     if cmd == "doctor":
         sys.exit(doctor())
+    if cmd in ("install-extension", "install"):
+        sys.exit(install_extension(args[1] if len(args) > 1 else None))
     if cmd == "module":
         print(f"Install: Packet Tracer > Extensions > Scripting > Configure PT Script Modules > Add... "
-              f"{MODULE.with_suffix('.pts')}")
+              f"{module_path()}")
+        print("Or just run: ptmcp install-extension")
         return
     if cmd == "exec" and len(args) > 1:
         code = args[1]

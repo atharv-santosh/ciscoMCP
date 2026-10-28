@@ -6,18 +6,34 @@ There are also some ready-made labs (router on a stick, OSPF/EIGRP/RIP topologie
 
 ## Install
 
-Needs Python 3.10+, [uv](https://docs.astral.sh/uv/) and Packet Tracer 9.
+Needs [uv](https://docs.astral.sh/uv/) and Packet Tracer 9.
+
+Register the server with your MCP client:
 
 ```
-git clone https://github.com/atharv-santosh/ciscoMCP
-cd ciscoMCP
-uv sync
-claude mcp add packet-tracer -- uv --directory "$PWD" run packet-tracer-mcp
+claude mcp add packet-tracer -- uvx --from ptmcp packet-tracer-mcp
 ```
 
-Then in Packet Tracer: Extensions > Scripting > Configure PT Script Modules > Add, pick `pt_extension/ptmcp.pts` and restart PT. A small "PT-MCP Bridge" window shows up and goes green once the MCP server is running.
+Cursor (`~/.cursor/mcp.json`), VS Code (`.vscode/mcp.json`) and Codex take the same command:
 
-If something isn't connecting, run `uv run ptmcp doctor`.
+```json
+{
+  "mcpServers": {
+    "packet-tracer": { "command": "uvx", "args": ["--from", "ptmcp", "packet-tracer-mcp"] }
+  }
+}
+```
+
+Then install the Packet Tracer side once:
+
+```
+uvx --from ptmcp ptmcp install-extension
+```
+
+Restart Packet Tracer and answer Yes when it asks about the new script module. A small "PT-MCP Bridge"
+window shows up and goes green once the MCP server is running.
+
+If something isn't connecting, run `uvx --from ptmcp ptmcp doctor`.
 
 ## Use
 
