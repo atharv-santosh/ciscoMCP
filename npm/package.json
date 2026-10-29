@@ -1,0 +1,14 @@
+{
+  "name": "ptmcp",
+  "version": "0.1.5",
+  "description": "MCP server for Cisco Packet Tracer 9. Build, configure and verify networks from an AI agent.",
+  "license": "MIT",
+  "author": "Atharv Santosh <atharvsantosh1@gmail.com>",
+  "homepage": "https://github.com/atharv-santosh/ciscoMCP",
+  "repository": { "type": "git", "url": "git+https://github.com/atharv-santosh/ciscoMCP.git" },
+  "bugs": { "url": "https://github.com/atharv-santosh/ciscoMCP/issues" },
+  "keywords": ["mcp", "packet-tracer", "cisco", "networking", "ccna", "ios"],
+  "bin": { "ptmcp": "bin/ptmcp.js" },
+  "files": ["bin", "README.md"],
+  "engines": { "node": ">=18" }
+}

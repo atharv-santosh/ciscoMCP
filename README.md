@@ -2,6 +2,10 @@
 
 MCP server for Cisco Packet Tracer 9. Lets Claude Code (or any MCP client) build networks in a running Packet Tracer: add devices, cable them, push IOS configs, address everything, set up routing, ping, and find what's broken. It can also read and write .pkt files without Packet Tracer open.
 
+![Building a 3 router OSPF ring, cabling it, addressing it and pinging across it](https://raw.githubusercontent.com/atharv-santosh/ciscoMCP/main/docs/demo.gif)
+
+Twelve devices, twelve cables, OSPF across the ring and 6/6 pings, from one prompt.
+
 There are also some ready-made labs (router on a stick, OSPF/EIGRP/RIP topologies, NAT, HSRP, EtherChannel, IPv6) that build in one call.
 
 ## Install
