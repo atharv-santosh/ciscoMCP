@@ -1,6 +1,6 @@
 {
   "name": "tracerlab",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "MCP server for Cisco Packet Tracer 9. Build, configure and verify networks from an AI agent.",
   "license": "MIT",
   "author": "Atharv Santosh <atharvsantosh1@gmail.com>",

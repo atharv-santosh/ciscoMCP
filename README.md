@@ -55,3 +55,5 @@ Open Packet Tracer, start Claude Code and ask for things like:
 ```
 uv run pytest
 ```
+
+mcp-name: io.github.atharv-santosh/tracerlab

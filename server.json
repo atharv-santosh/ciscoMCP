@@ -7,13 +7,13 @@
     "url": "https://github.com/atharv-santosh/tracerlab",
     "source": "github"
   },
-  "version": "0.1.5",
+  "version": "0.1.6",
   "packages": [
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "tracerlab",
-      "version": "0.1.5",
+      "version": "0.1.6",
       "transport": { "type": "stdio" }
     }
   ]
