@@ -2,12 +2,12 @@
 // Thin launcher: runs the Python server through uvx so node users get one command.
 const { spawn, spawnSync } = require("node:child_process");
 
-const PKG = "ptmcp";
+const PKG = "tracerlab";
 const ENTRY = "packet-tracer-mcp";
 const args = process.argv.slice(2);
 
 if (spawnSync("uvx", ["--version"], { stdio: "ignore" }).error) {
-  console.error("ptmcp needs uv. Install it from https://docs.astral.sh/uv/ then run this again.");
+  console.error("tracerlab needs uv. Install it from https://docs.astral.sh/uv/ then run this again.");
   process.exit(1);
 }
 

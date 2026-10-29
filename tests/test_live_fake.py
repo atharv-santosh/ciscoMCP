@@ -21,7 +21,7 @@ def _free_port() -> int:
 PORT = _free_port()
 os.environ["PTMCP_PORT"] = str(PORT)
 
-from ptmcp import server  # noqa: E402  (port must be set first)
+from tracerlab import server  # noqa: E402  (port must be set first)
 
 pytestmark = pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
 

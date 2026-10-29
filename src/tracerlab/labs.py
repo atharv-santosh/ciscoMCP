@@ -366,6 +366,6 @@ def lab_list() -> str:
     import inspect
     rows = []
     for k, fn in LABS.items():
-        sig = str(inspect.signature(fn)).replace(" -> ptmcp.labs.LabSpec", "").replace(" -> LabSpec", "")
+        sig = str(inspect.signature(fn)).replace(" -> tracerlab.labs.LabSpec", "").replace(" -> LabSpec", "")
         rows.append(f"{k}{sig}\n    {(fn.__doc__ or '').strip()}")
     return "\n".join(rows)

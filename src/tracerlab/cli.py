@@ -1,10 +1,10 @@
-"""ptmcp command line.
+"""tracerlab command line.
 
-ptmcp doctor             check PT, the bridge port and the PT module
-ptmcp install-extension  copy the PT script module into Packet Tracer
-ptmcp module             print the PT-side script and install steps
-ptmcp exec '<js>'        run JS in PT through a running server
-ptmcp serve-bridge       run only the bridge
+tracerlab doctor             check PT, the bridge port and the PT module
+tracerlab install-extension  copy the PT script module into Packet Tracer
+tracerlab module             print the PT-side script and install steps
+tracerlab exec '<js>'        run JS in PT through a running server
+tracerlab serve-bridge       run only the bridge
 """
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ MODULE_NAME = "ptmcp.pts"
 
 
 def module_path() -> Path:
-    return Path(str(resources.files("ptmcp").joinpath("pt_extension", MODULE_NAME)))
+    return Path(str(resources.files("tracerlab").joinpath("pt_extension", MODULE_NAME)))
 
 
 def pt_extension_dirs() -> list[Path]:
@@ -51,7 +51,7 @@ def install_extension(dest: str | None = None) -> int:
     targets = [Path(dest)] if dest else pt_extension_dirs()
     if not targets:
         print("no Packet Tracer install found; pass the extensions directory:", file=sys.stderr)
-        print("  ptmcp install-extension '/path/to/Packet Tracer/extensions'", file=sys.stderr)
+        print("  tracerlab install-extension '/path/to/Packet Tracer/extensions'", file=sys.stderr)
         return 1
 
     for ext in targets:
@@ -88,11 +88,11 @@ def doctor() -> int:
     installed = [e / "ptmcp" / MODULE_NAME for e in pt_extension_dirs()]
     found = [p for p in installed if p.is_file()]
     print(("ok" if found else "--"), "PT script module",
-          str(found[0]) if found else "not installed (run `ptmcp install-extension`)")
+          str(found[0]) if found else "not installed (run `tracerlab install-extension`)")
 
     st = _ping()
     if st is None:
-        print("--", f"no ptmcp bridge on 127.0.0.1:{PORT} (starts with the MCP server; or `ptmcp serve-bridge`)")
+        print("--", f"no ptmcp bridge on 127.0.0.1:{PORT} (starts with the MCP server; or `tracerlab serve-bridge`)")
     else:
         print("ok", f"bridge on :{PORT} mode={st.get('mode')}")
         print(("ok" if st.get("connected") else "--"), "PT module connected",
@@ -131,7 +131,7 @@ def main() -> None:
     if cmd == "module":
         print(f"Install: Packet Tracer > Extensions > Scripting > Configure PT Script Modules > Add... "
               f"{module_path()}")
-        print("Or just run: ptmcp install-extension")
+        print("Or just run: tracerlab install-extension")
         return
     if cmd == "exec" and len(args) > 1:
         code = args[1]

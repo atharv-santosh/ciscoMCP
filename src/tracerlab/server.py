@@ -21,9 +21,9 @@ from mcp.types import ToolAnnotations
 from . import __version__, catalog, configgen, labs, netcalc, pkt, planner
 from .bridge import Bridge, NotConnected, PTError
 
-log = logging.getLogger("ptmcp")
+log = logging.getLogger("tracerlab")
 
-INSTRUCTIONS = f"""Cisco Packet Tracer 9 control (ptmcp {__version__}).
+INSTRUCTIONS = f"""Cisco Packet Tracer 9 control (tracerlab {__version__}).
 
 Workflow that works best:
 1. pt_status: confirms PT is connected (if not, run pt_setup_instructions and tell the user).
@@ -207,7 +207,7 @@ async def pt_setup_instructions() -> str:
     from .cli import module_path
     ext = module_path().parent
     return f"""One-time Packet Tracer setup (30 seconds):
-0. Easiest: run `ptmcp install-extension`, then restart Packet Tracer and answer Yes when it
+0. Easiest: run `tracerlab install-extension`, then restart Packet Tracer and answer Yes when it
    asks about the new script module. Steps 1-2 are the manual equivalent.
 1. Packet Tracer 9 > Extensions > Scripting > Configure PT Script Modules... > Add...
 2. Choose {ext / 'ptmcp.pts'} (Startup is already "On Startup").
@@ -215,7 +215,7 @@ async def pt_setup_instructions() -> str:
    and turns green ("connected") while this MCP server runs. Reopen it from Extensions > PT-MCP Bridge.
 The window only loads a stub; the bridge logic is served by this server, so updates need no reinstall.
 Rebuilding the module from source: see {ext / 'ptmcp.js'} header.
-Bridge port: {bridge.port} (env PTMCP_PORT; must match PTMCP_PORT in the module's bridge.html)."""
+Bridge port: {bridge.port} (env TRACERLAB_PORT; must match PTMCP_PORT in the module's bridge.html)."""
 
 
 @tool(ro=True)
@@ -1008,7 +1008,7 @@ def pt_api_lookup(query: str, limit: int = 40) -> str:
     query: a class name ('TerminalLine'), a method fragment ('Vlan', 'ospf'), or 'Class.method'."""
     global _API
     if _API is None:
-        with resources.files("ptmcp").joinpath("data/pt_api.json.gz").open("rb") as fh:
+        with resources.files("tracerlab").joinpath("data/pt_api.json.gz").open("rb") as fh:
             _API = json.loads(gzip.decompress(fh.read()))
     q = query.strip()
     if q in _API:

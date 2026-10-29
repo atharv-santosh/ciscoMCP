@@ -1,6 +1,6 @@
 """HTTP long-poll bridge to the PT script module.
 
-If another ptmcp already owns the port, jobs are relayed through it (POST /exec).
+If another tracerlab already owns the port, jobs are relayed through it (POST /exec).
 """
 
 from __future__ import annotations
@@ -17,10 +17,10 @@ from dataclasses import dataclass, field
 from importlib import resources
 from typing import Any
 
-log = logging.getLogger("ptmcp.bridge")
+log = logging.getLogger("tracerlab.bridge")
 
 HOST = "127.0.0.1"
-PORT = int(os.environ.get("PTMCP_PORT", "39150"))
+PORT = int(os.environ.get("TRACERLAB_PORT") or os.environ.get("PTMCP_PORT") or "39150")
 POLL_HOLD_S = 20.0           # how long a /poll request is held open when idle
 STALE_AFTER_S = POLL_HOLD_S + 10.0
 PICKUP_S = 8.0                # a queued job must be picked up by a poll within this
@@ -45,7 +45,7 @@ class _Job:
 
 
 def _bridge_js() -> str:
-    return resources.files("ptmcp").joinpath("js/bridge.js").read_text()
+    return resources.files("tracerlab").joinpath("js/bridge.js").read_text()
 
 
 def _bridge_build() -> str:
@@ -54,7 +54,7 @@ def _bridge_build() -> str:
 
 
 def _runtime_js() -> str:
-    return resources.files("ptmcp").joinpath("js/runtime.js").read_text()
+    return resources.files("tracerlab").joinpath("js/runtime.js").read_text()
 
 
 def _runtime_version(js: str) -> str:
@@ -356,4 +356,4 @@ def _unwrap(env: dict) -> Any:
 
 
 def _bridge_page(port: int) -> str:
-    return resources.files("ptmcp").joinpath("js/bridge.html").read_text().replace("__PORT__", str(port))
+    return resources.files("tracerlab").joinpath("js/bridge.html").read_text().replace("__PORT__", str(port))

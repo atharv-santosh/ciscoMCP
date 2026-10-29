@@ -1,8 +1,8 @@
-# ciscoMCP
+# Tracerlab
 
 MCP server for Cisco Packet Tracer 9. Lets Claude Code (or any MCP client) build networks in a running Packet Tracer: add devices, cable them, push IOS configs, address everything, set up routing, ping, and find what's broken. It can also read and write .pkt files without Packet Tracer open.
 
-![Building a 3 router OSPF ring, cabling it, addressing it and pinging across it](https://raw.githubusercontent.com/atharv-santosh/ciscoMCP/main/docs/demo.gif)
+![Building a 3 router OSPF ring, cabling it, addressing it and pinging across it](https://raw.githubusercontent.com/atharv-santosh/tracerlab/main/docs/demo.gif)
 
 Twelve devices, twelve cables, OSPF across the ring and 6/6 pings, from one prompt.
 
@@ -15,7 +15,7 @@ Needs [uv](https://docs.astral.sh/uv/) and Packet Tracer 9.
 Register the server with your MCP client:
 
 ```
-claude mcp add packet-tracer -- uvx --from ptmcp packet-tracer-mcp
+claude mcp add packet-tracer -- uvx --from tracerlab packet-tracer-mcp
 ```
 
 Cursor (`~/.cursor/mcp.json`), VS Code (`.vscode/mcp.json`) and Codex take the same command:
@@ -23,7 +23,7 @@ Cursor (`~/.cursor/mcp.json`), VS Code (`.vscode/mcp.json`) and Codex take the s
 ```json
 {
   "mcpServers": {
-    "packet-tracer": { "command": "uvx", "args": ["--from", "ptmcp", "packet-tracer-mcp"] }
+    "packet-tracer": { "command": "uvx", "args": ["--from", "tracerlab", "packet-tracer-mcp"] }
   }
 }
 ```
@@ -31,13 +31,13 @@ Cursor (`~/.cursor/mcp.json`), VS Code (`.vscode/mcp.json`) and Codex take the s
 Then install the Packet Tracer side once:
 
 ```
-uvx --from ptmcp ptmcp install-extension
+uvx tracerlab install-extension
 ```
 
 Restart Packet Tracer and answer Yes when it asks about the new script module. A small "PT-MCP Bridge"
 window shows up and goes green once the MCP server is running.
 
-If something isn't connecting, run `uvx --from ptmcp ptmcp doctor`.
+If something isn't connecting, run `uvx tracerlab doctor`.
 
 ## Use
 

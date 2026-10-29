@@ -2,8 +2,8 @@ import glob
 
 import pytest
 
-from ptmcp import catalog, configgen as cg, labs, netcalc, pkt, planner
-from ptmcp.twofish import EAX, Twofish
+from tracerlab import catalog, configgen as cg, labs, netcalc, pkt, planner
+from tracerlab.twofish import EAX, Twofish
 
 from fixtures import two_router_snapshot
 

@@ -1,4 +1,4 @@
-"""Build src/ptmcp/data/pt_api.json.gz from the IPC API docs that ship with PT.
+"""Build src/tracerlab/data/pt_api.json.gz from the IPC API docs that ship with PT.
 
     uv run python scripts/build_api_index.py "/Applications/Cisco Packet Tracer 9.0.0"
 """
@@ -50,7 +50,7 @@ for f in sorted(api.glob("class_*.html")):
         inherited_from.append(text(b))
     index[cls] = {"brief": text(brief.group(1))[:300] if brief else "", "bases": inherited_from, "methods": methods}
 
-out = Path(__file__).resolve().parent.parent / "src/ptmcp/data/pt_api.json.gz"
+out = Path(__file__).resolve().parent.parent / "src/tracerlab/data/pt_api.json.gz"
 out.parent.mkdir(exist_ok=True)
 with gzip.open(out, "wt") as fh:
     json.dump(index, fh, separators=(",", ":"))

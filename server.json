@@ -1,10 +1,10 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
-  "name": "io.github.atharv-santosh/ptmcp",
+  "name": "io.github.atharv-santosh/tracerlab",
   "description": "Build, configure and verify Cisco Packet Tracer networks from an AI agent. Adds devices, cables them, pushes IOS config, addresses subnets, sets up routing and pings to prove it works.",
   "status": "active",
   "repository": {
-    "url": "https://github.com/atharv-santosh/ciscoMCP",
+    "url": "https://github.com/atharv-santosh/tracerlab",
     "source": "github"
   },
   "version": "0.1.5",
@@ -12,7 +12,7 @@
     {
       "registry_type": "pypi",
       "registry_base_url": "https://pypi.org",
-      "identifier": "ptmcp",
+      "identifier": "tracerlab",
       "version": "0.1.5",
       "transport": { "type": "stdio" }
     }

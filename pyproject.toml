@@ -1,5 +1,5 @@
 [project]
-name = "ptmcp"
+name = "tracerlab"
 version = "0.1.5"
 description = "MCP server for Cisco Packet Tracer 9. Build, configure and verify networks from an AI agent."
 readme = "README.md"
@@ -23,13 +23,13 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/atharv-santosh/ciscoMCP"
-Repository = "https://github.com/atharv-santosh/ciscoMCP"
-Issues = "https://github.com/atharv-santosh/ciscoMCP/issues"
+Homepage = "https://github.com/atharv-santosh/tracerlab"
+Repository = "https://github.com/atharv-santosh/tracerlab"
+Issues = "https://github.com/atharv-santosh/tracerlab/issues"
 
 [project.scripts]
-ptmcp = "ptmcp.cli:main"
-packet-tracer-mcp = "ptmcp.server:main"
+tracerlab = "tracerlab.cli:main"
+packet-tracer-mcp = "tracerlab.server:main"
 
 [dependency-groups]
 dev = [
@@ -42,10 +42,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/ptmcp"]
+packages = ["src/tracerlab"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/ptmcp", "tests", "README.md", "LICENSE"]
+include = ["src/tracerlab", "tests", "README.md", "LICENSE"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
